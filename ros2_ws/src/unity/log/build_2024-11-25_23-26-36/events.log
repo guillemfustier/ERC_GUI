@@ -1,0 +1,58 @@
+[0.000000] (-) TimerEvent: {}
+[0.000687] (unity) JobQueued: {'identifier': 'unity', 'dependencies': OrderedDict()}
+[0.001133] (unity) JobStarted: {'identifier': 'unity'}
+[0.099160] (-) TimerEvent: {}
+[0.199731] (-) TimerEvent: {}
+[0.300128] (-) TimerEvent: {}
+[0.400760] (-) TimerEvent: {}
+[0.501328] (-) TimerEvent: {}
+[0.601700] (-) TimerEvent: {}
+[0.702018] (-) TimerEvent: {}
+[0.802402] (-) TimerEvent: {}
+[0.902766] (-) TimerEvent: {}
+[1.003703] (-) TimerEvent: {}
+[1.104274] (-) TimerEvent: {}
+[1.204998] (-) TimerEvent: {}
+[1.305646] (-) TimerEvent: {}
+[1.406477] (-) TimerEvent: {}
+[1.507234] (-) TimerEvent: {}
+[1.537807] (unity) Command: {'cmd': ['/usr/bin/python3', '-W', 'ignore:setup.py install is deprecated', 'setup.py', 'develop', '--editable', '--build-directory', '/home/guillem/Documents/GitHub/ros2_ws/src/unity/build/unity/build', '--no-deps', 'symlink_data'], 'cwd': '/home/guillem/Documents/GitHub/ros2_ws/src/unity/build/unity', 'env': {'LESSOPEN': '| /usr/bin/lesspipe %s', 'CONDA_PROMPT_MODIFIER': '(base)', 'USER': 'guillem', 'LC_TIME': 'es_ES.UTF-8', 'XDG_SESSION_TYPE': 'wayland', 'SHLVL': '1', 'LD_LIBRARY_PATH': '/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib:/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:', 'HOME': '/home/guillem', 'CONDA_SHLVL': '1', 'OLDPWD': '/home/guillem/Documents/GitHub/ros2_ws/src', 'DESKTOP_SESSION': 'ubuntu', 'GAZEBO_MASTER_URI': 'http://localhost:11345', 'ROS_PYTHON_VERSION': '3', 'GNOME_SHELL_SESSION_MODE': 'ubuntu', 'GTK_MODULES': 'gail:atk-bridge', 'LC_MONETARY': 'es_ES.UTF-8', 'SYSTEMD_EXEC_PID': '2092', 'DBUS_SESSION_BUS_ADDRESS': 'unix:path=/run/user/1000/bus', 'COLORTERM': 'truecolor', '_CE_M': '', 'IM_CONFIG_PHASE': '1', 'WAYLAND_DISPLAY': 'wayland-0', 'ROS_DISTRO': 'humble', 'LOGNAME': 'guillem', '_': '/usr/bin/colcon', 'ROS_VERSION': '2', 'XDG_SESSION_CLASS': 'user', 'USERNAME': 'guillem', 'TERM': 'xterm-256color', 'GAZEBO_MODEL_PATH': '/usr/share/gazebo-11/models:', 'GNOME_DESKTOP_SESSION_ID': 'this-is-deprecated', '_CE_CONDA': '', 'ROS_LOCALHOST_ONLY': '0', 'OGRE_RESOURCE_PATH': '/usr/lib/x86_64-linux-gnu/OGRE-1.9.0', 'PATH': '/home/guillem/miniforge3/bin:/home/guillem/miniforge3/condabin:/opt/ros/humble/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin:/home/guillem/.dotnet/tools', 'SESSION_MANAGER': 'local/guillem-ubuntu22:@/tmp/.ICE-unix/1905,unix/guillem-ubuntu22:/tmp/.ICE-unix/1905', 'XDG_MENU_PREFIX': 'gnome-', 'LC_ADDRESS': 'es_ES.UTF-8', 'GNOME_TERMINAL_SCREEN': '/org/gnome/Terminal/screen/7b432b81_6c34_492a_a67f_7243d17e006f', 'GNOME_SETUP_DISPLAY': ':1', 'XDG_RUNTIME_DIR': '/run/user/1000', 'DISPLAY': ':0', 'LANG': 'en_US.UTF-8', 'XDG_CURRENT_DESKTOP': 'ubuntu:GNOME', 'DOTNET_BUNDLE_EXTRACT_BASE_DIR': '/home/guillem/.cache/dotnet_bundle_extract', 'LC_TELEPHONE': 'es_ES.UTF-8', 'XMODIFIERS': '@im=ibus', 'XDG_SESSION_DESKTOP': 'ubuntu', 'XAUTHORITY': '/run/user/1000/.mutter-Xwaylandauth.K6FQX2', 'LS_COLORS': 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:', 'GNOME_TERMINAL_SERVICE': ':1.180', 'SSH_AGENT_LAUNCHER': 'gnome-keyring', 'SSH_AUTH_SOCK': '/run/user/1000/keyring/ssh', 'XML_CATALOG_FILES': 'file:///home/guillem/miniforge3/etc/xml/catalog file:///etc/xml/catalog', 'AMENT_PREFIX_PATH': '/opt/ros/humble', 'CONDA_PYTHON_EXE': '/home/guillem/miniforge3/bin/python', 'SHELL': '/bin/bash', 'LC_NAME': 'es_ES.UTF-8', 'QT_ACCESSIBILITY': '1', 'GDMSESSION': 'ubuntu', 'LESSCLOSE': '/usr/bin/lesspipe %s %s', 'CONDA_DEFAULT_ENV': 'base', 'LC_MEASUREMENT': 'es_ES.UTF-8', 'GAZEBO_RESOURCE_PATH': '/usr/share/gazebo-11:', 'LC_IDENTIFICATION': 'es_ES.UTF-8', 'GAZEBO_MODEL_DATABASE_URI': 'http://models.gazebosim.org', 'QT_IM_MODULE': 'ibus', 'PWD': '/home/guillem/Documents/GitHub/ros2_ws/src/unity/build/unity', 'LC_ALL': 'en_US.UTF-8', 'XDG_CONFIG_DIRS': '/etc/xdg/xdg-ubuntu:/etc/xdg', 'CONDA_EXE': '/home/guillem/miniforge3/bin/conda', 'GAZEBO_PLUGIN_PATH': '/usr/lib/x86_64-linux-gnu/gazebo-11/plugins:', 'XDG_DATA_DIRS': '/usr/share/ubuntu:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop', 'PYTHONPATH': '/home/guillem/Documents/GitHub/ros2_ws/src/unity/build/unity/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/guillem/Documents/GitHub/ros2_ws/src/unity/install/unity/lib/python3.10/site-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages', 'LC_NUMERIC': 'es_ES.UTF-8', 'CONDA_PREFIX': '/home/guillem/miniforge3', 'LC_PAPER': 'es_ES.UTF-8', 'COLCON': '1', 'VTE_VERSION': '6800'}, 'shell': False}
+[1.607371] (-) TimerEvent: {}
+[1.707791] (-) TimerEvent: {}
+[1.808287] (-) TimerEvent: {}
+[1.908644] (-) TimerEvent: {}
+[2.009059] (-) TimerEvent: {}
+[2.109740] (-) TimerEvent: {}
+[2.210127] (-) TimerEvent: {}
+[2.214898] (unity) StdoutLine: {'line': b'running develop\n'}
+[2.217300] (unity) StderrLine: {'line': b'/usr/lib/python3/dist-packages/setuptools/command/easy_install.py:158: EasyInstallDeprecationWarning: easy_install command is deprecated. Use build and pip and other standards-based tools.\n'}
+[2.217962] (unity) StderrLine: {'line': b'  warnings.warn(\n'}
+[2.310264] (-) TimerEvent: {}
+[2.410783] (-) TimerEvent: {}
+[2.511409] (-) TimerEvent: {}
+[2.611883] (-) TimerEvent: {}
+[2.666392] (unity) StdoutLine: {'line': b'running egg_info\n'}
+[2.666891] (unity) StdoutLine: {'line': b'creating unity.egg-info\n'}
+[2.667705] (unity) StdoutLine: {'line': b'writing unity.egg-info/PKG-INFO\n'}
+[2.669705] (unity) StdoutLine: {'line': b'writing dependency_links to unity.egg-info/dependency_links.txt\n'}
+[2.670190] (unity) StdoutLine: {'line': b'writing entry points to unity.egg-info/entry_points.txt\n'}
+[2.670742] (unity) StdoutLine: {'line': b'writing requirements to unity.egg-info/requires.txt\n'}
+[2.670952] (unity) StdoutLine: {'line': b'writing top-level names to unity.egg-info/top_level.txt\n'}
+[2.671132] (unity) StdoutLine: {'line': b"writing manifest file 'unity.egg-info/SOURCES.txt'\n"}
+[2.673780] (unity) StdoutLine: {'line': b"reading manifest file 'unity.egg-info/SOURCES.txt'\n"}
+[2.675001] (unity) StdoutLine: {'line': b"writing manifest file 'unity.egg-info/SOURCES.txt'\n"}
+[2.679513] (unity) StdoutLine: {'line': b'running build_ext\n'}
+[2.679916] (unity) StdoutLine: {'line': b'Creating /home/guillem/Documents/GitHub/ros2_ws/src/unity/install/unity/lib/python3.10/site-packages/unity.egg-link (link to .)\n'}
+[2.682678] (unity) StdoutLine: {'line': b'Installing ejemplo script to /home/guillem/Documents/GitHub/ros2_ws/src/unity/install/unity/lib/unity\n'}
+[2.683267] (unity) StdoutLine: {'line': b'\n'}
+[2.683427] (unity) StdoutLine: {'line': b'Installed /home/guillem/Documents/GitHub/ros2_ws/src/unity/build/unity\n'}
+[2.683563] (unity) StdoutLine: {'line': b'running symlink_data\n'}
+[2.683673] (unity) StdoutLine: {'line': b'creating /home/guillem/Documents/GitHub/ros2_ws/src/unity/install/unity/share/ament_index\n'}
+[2.685182] (unity) StdoutLine: {'line': b'creating /home/guillem/Documents/GitHub/ros2_ws/src/unity/install/unity/share/ament_index/resource_index\n'}
+[2.685498] (unity) StdoutLine: {'line': b'creating /home/guillem/Documents/GitHub/ros2_ws/src/unity/install/unity/share/ament_index/resource_index/packages\n'}
+[2.685653] (unity) StdoutLine: {'line': b'symbolically linking /home/guillem/Documents/GitHub/ros2_ws/src/unity/build/unity/resource/unity -> /home/guillem/Documents/GitHub/ros2_ws/src/unity/install/unity/share/ament_index/resource_index/packages\n'}
+[2.685780] (unity) StdoutLine: {'line': b'symbolically linking /home/guillem/Documents/GitHub/ros2_ws/src/unity/build/unity/package.xml -> /home/guillem/Documents/GitHub/ros2_ws/src/unity/install/unity/share/unity\n'}
+[2.712099] (-) TimerEvent: {}
+[2.756064] (unity) CommandEnded: {'returncode': 0}
+[2.790079] (unity) JobEnded: {'identifier': 'unity', 'rc': 0}
+[2.791015] (-) EventReactorShutdown: {}

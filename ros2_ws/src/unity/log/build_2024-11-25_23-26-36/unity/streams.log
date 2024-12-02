@@ -1,0 +1,26 @@
+[1.537s] Invoking command in '/home/guillem/Documents/GitHub/ros2_ws/src/unity/build/unity': CONDA_PROMPT_MODIFIER=(base) PYTHONPATH=/home/guillem/Documents/GitHub/ros2_ws/src/unity/build/unity/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/guillem/Documents/GitHub/ros2_ws/src/unity/install/unity/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated setup.py develop --editable --build-directory /home/guillem/Documents/GitHub/ros2_ws/src/unity/build/unity/build --no-deps symlink_data
+[2.213s] running develop
+[2.216s] /usr/lib/python3/dist-packages/setuptools/command/easy_install.py:158: EasyInstallDeprecationWarning: easy_install command is deprecated. Use build and pip and other standards-based tools.
+[2.216s]   warnings.warn(
+[2.665s] running egg_info
+[2.666s] creating unity.egg-info
+[2.666s] writing unity.egg-info/PKG-INFO
+[2.668s] writing dependency_links to unity.egg-info/dependency_links.txt
+[2.669s] writing entry points to unity.egg-info/entry_points.txt
+[2.669s] writing requirements to unity.egg-info/requires.txt
+[2.669s] writing top-level names to unity.egg-info/top_level.txt
+[2.670s] writing manifest file 'unity.egg-info/SOURCES.txt'
+[2.672s] reading manifest file 'unity.egg-info/SOURCES.txt'
+[2.673s] writing manifest file 'unity.egg-info/SOURCES.txt'
+[2.678s] running build_ext
+[2.678s] Creating /home/guillem/Documents/GitHub/ros2_ws/src/unity/install/unity/lib/python3.10/site-packages/unity.egg-link (link to .)
+[2.681s] Installing ejemplo script to /home/guillem/Documents/GitHub/ros2_ws/src/unity/install/unity/lib/unity
+[2.682s] 
+[2.682s] Installed /home/guillem/Documents/GitHub/ros2_ws/src/unity/build/unity
+[2.682s] running symlink_data
+[2.682s] creating /home/guillem/Documents/GitHub/ros2_ws/src/unity/install/unity/share/ament_index
+[2.684s] creating /home/guillem/Documents/GitHub/ros2_ws/src/unity/install/unity/share/ament_index/resource_index
+[2.684s] creating /home/guillem/Documents/GitHub/ros2_ws/src/unity/install/unity/share/ament_index/resource_index/packages
+[2.684s] symbolically linking /home/guillem/Documents/GitHub/ros2_ws/src/unity/build/unity/resource/unity -> /home/guillem/Documents/GitHub/ros2_ws/src/unity/install/unity/share/ament_index/resource_index/packages
+[2.684s] symbolically linking /home/guillem/Documents/GitHub/ros2_ws/src/unity/build/unity/package.xml -> /home/guillem/Documents/GitHub/ros2_ws/src/unity/install/unity/share/unity
+[2.756s] Invoked command in '/home/guillem/Documents/GitHub/ros2_ws/src/unity/build/unity' returned '0': CONDA_PROMPT_MODIFIER=(base) PYTHONPATH=/home/guillem/Documents/GitHub/ros2_ws/src/unity/build/unity/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/guillem/Documents/GitHub/ros2_ws/src/unity/install/unity/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated setup.py develop --editable --build-directory /home/guillem/Documents/GitHub/ros2_ws/src/unity/build/unity/build --no-deps symlink_data
