@@ -9,9 +9,11 @@ public class CompressedImageSubscriber : MonoBehaviour
 {
     [Header("UI Configuration")]
     public RawImage rawImageDisplay;
+    public RawImage rawImageDisplay2;
 
     [Header("ROS2 Configuration")]
-    public string topicName_cam1 = "/camara_logitech_1/image_raw/compressed";
+    public string topicName = "/camara_logitech_1/image_raw/compressed";
+    public string topicName2 = "/camara_logitech_2/image_raw/compressed";
 
     [Header("Optimization")]
     public int maxQueueSize = 1; // Máximo de mensajes en la cola
@@ -19,6 +21,7 @@ public class CompressedImageSubscriber : MonoBehaviour
     private ROS2UnityComponent ros2Unity;
     private ROS2Node ros2Node;
     private ISubscription<CompressedImage> imageSubscription;
+    private ISubscription<CompressedImage> imageSubscription2;
 
     // Cola concurrente expuesta para modificar en Unity
     public ConcurrentQueue<byte[]> imageQueue = new ConcurrentQueue<byte[]>();
@@ -37,13 +40,16 @@ public class CompressedImageSubscriber : MonoBehaviour
         if (ros2Node == null && ros2Unity.Ok())
         {
             ros2Node = ros2Unity.CreateNode("compressed_image_listener_node");
-
-            // Crear la suscripción sin configuración específica de QoS
-            imageSubscription = ros2Node.CreateSubscription<CompressedImage>(
-                topicName_cam1,
-                ImagenRecibida
-            );
         }
+        // Crear la suscripción sin configuración específica de QoS
+    }
+
+    void Camera1Suscriber()
+    {
+        imageSubscription = ros2Node.CreateSubscription<CompressedImage>(
+            topicName,
+            ImagenRecibida
+        );
 
         // Procesar la imagen más reciente si no se está procesando otra
         if (!isProcessing && imageQueue.TryDequeue(out byte[] imageData))
@@ -53,6 +59,20 @@ public class CompressedImageSubscriber : MonoBehaviour
         }
     }
 
+    void Camera2Suscriber()
+    {
+        imageSubscription2 = ros2Node.CreateSubscription<CompressedImage>(
+            topicName2,
+            ImagenRecibida
+        );
+
+        // Procesar la imagen más reciente si no se está procesando otra
+        if (!isProcessing && imageQueue.TryDequeue(out byte[] imageData))
+        {
+            isProcessing = true;
+            ProcessImage(imageData);
+        }
+    }
     private void ImagenRecibida(CompressedImage msg)
     {
         // Mantener la cola dentro del tamaño máximo
