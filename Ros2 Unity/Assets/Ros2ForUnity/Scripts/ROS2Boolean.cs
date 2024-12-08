@@ -28,7 +28,7 @@ namespace ROS2
             if (ros2Node == null && ros2Unity.Ok())
             {
                 ros2Node = ros2Unity.CreateNode("NodoGeneral");
-                CamarasPublisher = ros2Node.CreatePublisher<std_msgs.msg.Bool>("/gui/camera_management");
+                CamarasPublisher = ros2Node.CreatePublisher<std_msgs.msg.Bool>("/gui/logitech_cameras");
             }
         } 
 
@@ -42,7 +42,7 @@ namespace ROS2
                 msg.Data = CamarasState;
                 CamarasPublisher.Publish(msg);
 
-                Debug.Log("CameraManagement " + CamarasState);
+                Debug.Log("CameraManagement (topic: /gui/logitech_cameras): " + CamarasState);
             }
         }
 
