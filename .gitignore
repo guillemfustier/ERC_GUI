@@ -77,3 +77,4 @@ crashlytics-build.properties
 /Ros2 Unity/Library*
 /Ros2 Unity/UserSettings/*
 /Ros2 Unity/Temp/*
+/Ros2 Unity/Assets/Course Library
