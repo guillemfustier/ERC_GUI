@@ -14,8 +14,8 @@ namespace ROS2
 
         // zed2_rotation_horizontal
 
-        private IPublisher<std_msgs.msg.Float32> SliderXPublisher;
-        private IPublisher<std_msgs.msg.Float32> SliderYPublisher;
+        private IPublisher<std_msgs.msg.Int32> SliderXPublisher;
+        private IPublisher<std_msgs.msg.Int32> SliderYPublisher;
 
         // Método Start
         void Start()
@@ -29,8 +29,8 @@ namespace ROS2
             if (ros2Node == null && ros2Unity.Ok())
             {
                 ros2Node = ros2Unity.CreateNode("NodoMotoresZed");
-                SliderXPublisher = ros2Node.CreatePublisher<std_msgs.msg.Float32>("zed2_rotation_horizontal");
-                SliderYPublisher = ros2Node.CreatePublisher<std_msgs.msg.Float32>("zed2_rotation_vertical");
+                SliderXPublisher = ros2Node.CreatePublisher<std_msgs.msg.Int32>("zed2_rotation_horizontal");
+                SliderYPublisher = ros2Node.CreatePublisher<std_msgs.msg.Int32>("zed2_rotation_vertical");
             }
         } 
 
@@ -38,8 +38,8 @@ namespace ROS2
         {
             if (SliderXPublisher != null)
             {
-                std_msgs.msg.Float32 msg = new std_msgs.msg.Float32();
-                msg.Data = SliderX.value;
+                std_msgs.msg.Int32 msg = new std_msgs.msg.Int32();
+                msg.Data = (int)SliderX.value;
                 SliderXPublisher.Publish(msg);
             }
         }
@@ -48,8 +48,8 @@ namespace ROS2
         {
             if (SliderYPublisher != null)
             {
-                std_msgs.msg.Float32 msg = new std_msgs.msg.Float32();
-                msg.Data = SliderY.value;
+                std_msgs.msg.Int32 msg = new std_msgs.msg.Int32();
+                msg.Data = (int)SliderY.value;
                 SliderYPublisher.Publish(msg);
             }
         }
