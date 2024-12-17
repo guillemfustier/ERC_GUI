@@ -10,10 +10,12 @@ public class CompressedImageSubscriber : MonoBehaviour
     [Header("UI Configuration")]
     public RawImage Display1;
     public RawImage Display2;
+    public RawImage Display3;
 
     [Header("ROS2 Configuration")]
     public string topicName_cam1 = "/camara_logitech_1/image_raw/compressed";
     public string topicName_cam2 = "/camara_logitech_2/image_raw/compressed";
+    public string topicName_cam3 = "/camara_logitech_3/image_raw/compressed";
 
     [Header("Optimization")]
     public int maxQueueSize = 1; // Máximo de mensajes en la cola
@@ -24,6 +26,7 @@ public class CompressedImageSubscriber : MonoBehaviour
     // Colas independientes para cada cámara
     private ConcurrentQueue<byte[]> imageQueue_cam1 = new ConcurrentQueue<byte[]>();
     private ConcurrentQueue<byte[]> imageQueue_cam2 = new ConcurrentQueue<byte[]>();
+    private ConcurrentQueue<byte[]> imageQueue_cam3 = new ConcurrentQueue<byte[]>();
 
     private ConcurrentQueue<Action> mainThreadQueue = new ConcurrentQueue<Action>(); // Para operaciones en el hilo principal
 
@@ -40,6 +43,7 @@ public class CompressedImageSubscriber : MonoBehaviour
             ros2Node = ros2Unity.CreateNode("compressed_image_listener_node");
             Camera1Subscriber();
             Camera2Subscriber();
+            Camera3Subscriber();
         }
 
         // Ejecutar acciones en el hilo principal
@@ -65,6 +69,15 @@ public class CompressedImageSubscriber : MonoBehaviour
             msg => ImagenRecibida(msg, imageQueue_cam2, Display2)
         );
         Debug.Log("Suscripción creada para cámara 2");
+    }
+
+    void Camera3Subscriber()
+    {
+        ros2Node.CreateSubscription<CompressedImage>(
+            topicName_cam3,
+            msg => ImagenRecibida(msg, imageQueue_cam3, Display3)
+        );
+        Debug.Log("Suscripción creada para cámara 3");
     }
 
     private void ImagenRecibida(CompressedImage msg, ConcurrentQueue<byte[]> queue, RawImage display)

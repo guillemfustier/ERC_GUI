@@ -3947,8 +3947,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Display1: {fileID: 693908758}
   Display2: {fileID: 1031616226}
+  Display3: {fileID: 2052646847}
   topicName_cam1: /camara_logitech_1/image_raw/compressed
   topicName_cam2: /camara_logitech_2/image_raw/compressed
+  topicName_cam3: /camara_logitech_3/image_raw/compressed
   maxQueueSize: 1
 --- !u!114 &916714066
 MonoBehaviour:
