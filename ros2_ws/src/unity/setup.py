@@ -22,6 +22,7 @@ setup(
         'console_scripts': [
             'ejemplo = unity.moverse_esperar:main',
             'image_subscriber = unity.image_subscriber:main',
+            'cam_pub = unity.cam_pub:main'
         ],
     },
 )

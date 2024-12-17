@@ -1,0 +1,45 @@
+[0.820s] Invoking command in '/home/alemany/ERC_GUI/ros2_ws/src/unity': PYTHONPATH=/home/alemany/ERC_GUI/ros2_ws/build/unity/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/alemany/ERC_GUI/ros2_ws/install/unity/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated setup.py egg_info --egg-base ../../build/unity build --build-base /home/alemany/ERC_GUI/ros2_ws/build/unity/build install --record /home/alemany/ERC_GUI/ros2_ws/build/unity/install.log --single-version-externally-managed install_data
+[1.078s] running egg_info
+[1.078s] creating ../../build/unity/unity.egg-info
+[1.079s] writing ../../build/unity/unity.egg-info/PKG-INFO
+[1.079s] writing dependency_links to ../../build/unity/unity.egg-info/dependency_links.txt
+[1.079s] writing entry points to ../../build/unity/unity.egg-info/entry_points.txt
+[1.079s] writing requirements to ../../build/unity/unity.egg-info/requires.txt
+[1.079s] writing top-level names to ../../build/unity/unity.egg-info/top_level.txt
+[1.079s] writing manifest file '../../build/unity/unity.egg-info/SOURCES.txt'
+[1.081s] reading manifest file '../../build/unity/unity.egg-info/SOURCES.txt'
+[1.081s] writing manifest file '../../build/unity/unity.egg-info/SOURCES.txt'
+[1.081s] running build
+[1.081s] running build_py
+[1.082s] creating /home/alemany/ERC_GUI/ros2_ws/build/unity/build
+[1.082s] creating /home/alemany/ERC_GUI/ros2_ws/build/unity/build/lib
+[1.082s] creating /home/alemany/ERC_GUI/ros2_ws/build/unity/build/lib/unity
+[1.082s] copying unity/__init__.py -> /home/alemany/ERC_GUI/ros2_ws/build/unity/build/lib/unity
+[1.082s] copying unity/cam_pub.py -> /home/alemany/ERC_GUI/ros2_ws/build/unity/build/lib/unity
+[1.082s] copying unity/image_subscriber.py -> /home/alemany/ERC_GUI/ros2_ws/build/unity/build/lib/unity
+[1.082s] copying unity/moverse_esperar.py -> /home/alemany/ERC_GUI/ros2_ws/build/unity/build/lib/unity
+[1.082s] running install
+[1.082s] running install_lib
+[1.083s] creating /home/alemany/ERC_GUI/ros2_ws/install/unity/lib/python3.10/site-packages/unity
+[1.083s] copying /home/alemany/ERC_GUI/ros2_ws/build/unity/build/lib/unity/__init__.py -> /home/alemany/ERC_GUI/ros2_ws/install/unity/lib/python3.10/site-packages/unity
+[1.084s] copying /home/alemany/ERC_GUI/ros2_ws/build/unity/build/lib/unity/cam_pub.py -> /home/alemany/ERC_GUI/ros2_ws/install/unity/lib/python3.10/site-packages/unity
+[1.084s] copying /home/alemany/ERC_GUI/ros2_ws/build/unity/build/lib/unity/image_subscriber.py -> /home/alemany/ERC_GUI/ros2_ws/install/unity/lib/python3.10/site-packages/unity
+[1.084s] copying /home/alemany/ERC_GUI/ros2_ws/build/unity/build/lib/unity/moverse_esperar.py -> /home/alemany/ERC_GUI/ros2_ws/install/unity/lib/python3.10/site-packages/unity
+[1.084s] byte-compiling /home/alemany/ERC_GUI/ros2_ws/install/unity/lib/python3.10/site-packages/unity/__init__.py to __init__.cpython-310.pyc
+[1.084s] byte-compiling /home/alemany/ERC_GUI/ros2_ws/install/unity/lib/python3.10/site-packages/unity/cam_pub.py to cam_pub.cpython-310.pyc
+[1.085s] byte-compiling /home/alemany/ERC_GUI/ros2_ws/install/unity/lib/python3.10/site-packages/unity/image_subscriber.py to image_subscriber.cpython-310.pyc
+[1.086s] byte-compiling /home/alemany/ERC_GUI/ros2_ws/install/unity/lib/python3.10/site-packages/unity/moverse_esperar.py to moverse_esperar.cpython-310.pyc
+[1.086s] running install_data
+[1.087s] creating /home/alemany/ERC_GUI/ros2_ws/install/unity/share/ament_index
+[1.087s] creating /home/alemany/ERC_GUI/ros2_ws/install/unity/share/ament_index/resource_index
+[1.087s] creating /home/alemany/ERC_GUI/ros2_ws/install/unity/share/ament_index/resource_index/packages
+[1.087s] copying resource/unity -> /home/alemany/ERC_GUI/ros2_ws/install/unity/share/ament_index/resource_index/packages
+[1.087s] copying package.xml -> /home/alemany/ERC_GUI/ros2_ws/install/unity/share/unity
+[1.087s] running install_egg_info
+[1.089s] Copying ../../build/unity/unity.egg-info to /home/alemany/ERC_GUI/ros2_ws/install/unity/lib/python3.10/site-packages/unity-0.0.0-py3.10.egg-info
+[1.090s] running install_scripts
+[1.115s] Installing cam_pub script to /home/alemany/ERC_GUI/ros2_ws/install/unity/lib/unity
+[1.116s] Installing ejemplo script to /home/alemany/ERC_GUI/ros2_ws/install/unity/lib/unity
+[1.116s] Installing image_subscriber script to /home/alemany/ERC_GUI/ros2_ws/install/unity/lib/unity
+[1.116s] writing list of installed files to '/home/alemany/ERC_GUI/ros2_ws/build/unity/install.log'
+[1.137s] Invoked command in '/home/alemany/ERC_GUI/ros2_ws/src/unity' returned '0': PYTHONPATH=/home/alemany/ERC_GUI/ros2_ws/build/unity/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/alemany/ERC_GUI/ros2_ws/install/unity/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated setup.py egg_info --egg-base ../../build/unity build --build-base /home/alemany/ERC_GUI/ros2_ws/build/unity/build install --record /home/alemany/ERC_GUI/ros2_ws/build/unity/install.log --single-version-externally-managed install_data
