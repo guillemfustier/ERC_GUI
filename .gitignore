@@ -73,6 +73,7 @@ crashlytics-build.properties
 # Temporary auto-generated Android Assets
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
+
 /Ros2 Unity/Library/*
 /Ros2 Unity/Library*
 /Ros2 Unity/UserSettings/*
@@ -81,3 +82,6 @@ crashlytics-build.properties
 /Ros2 Unity/Library
 /Ros2 Unity/Library
 Ros2 Unity/Library/ArtifactDB-lock
+/Ros2 Unity/Assets/Course Library
+/Ros2 Unity/Library
+/Ros2 Unity/Temp
