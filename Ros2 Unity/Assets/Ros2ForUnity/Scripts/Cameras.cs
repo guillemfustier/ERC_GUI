@@ -2,59 +2,61 @@ using ROS2;
 using sensor_msgs.msg;
 using UnityEngine;
 using UnityEngine.UI;
-using System;
+using std_msgs.msg;
 using System.Collections.Concurrent;
 
 public class Cameras : MonoBehaviour
 {
     [Header("UI Configuration")]
-    public RawImage rawImageDisplay1;
-    public RawImage rawImageDisplay2;
-    public RawImage rawImageDisplay3;
-    public RawImage rawImageDisplay4;
-    public RawImage rawImageDisplay5;
+    public GameObject logitech1UI;
+    public GameObject logitech2UI;
+    public GameObject siyiUI;
+    public GameObject zedUI;
+    public GameObject lidar2DUI;
+    public GameObject lidar4DUI;
+    public GameObject realsenseUI;
+
+    public RawImage logitech1Image;
+    public RawImage logitech2Image;
+    public RawImage siyiImage;
+    public RawImage zedImage;
+    public RawImage lidar2DImage;
+    public RawImage lidar4DImage;
+    public RawImage realsenseImage;
 
     [Header("ROS2 Configuration")]
-    public string topicName1 = "/camara_logitech_1/image_raw/compressed";
-    public string topicName2 = "/camara_logitech_2/image_raw/compressed";
-    public string topicName3 = "/camara_logitech_3/image_raw/compressed";
-    public string topicName4 = "/camara_logitech_4/image_raw/compressed";
-    public string topicName5 = "/camara_logitech_5/image_raw/compressed";
+    public string topicLogitech1 = "/gui_cam_logitech_1";
+    public string topicLogitech2 = "/gui_cam_logitech_2";
+    public string topicSiyi = "/gui_cam_siyi";
+    public string topicZed = "/gui_cam_zed";
+    public string topicLidar2D = "/gui_lidar_2d";
+    public string topicLidar4D = "/gui_lidar_4d";
+    public string topicRealsense = "/gui_cam_realsense";
 
-    [Header("Optimization")]
-    public int maxQueueSize = 1; // Máximo de mensajes en la cola
+    public string imageTopicLogitech1 = "/camara_logitech_1/image_raw/compressed";
+    public string imageTopicLogitech2 = "/camara_logitech_2/image_raw/compressed";
+    public string imageTopicSiyi = "/camara_siyi/image_raw/compressed";
+    public string imageTopicZed = "/camara_zed/image_raw/compressed";
+    public string imageTopicRealsense = "/camara_realsense/image_raw/compressed";
 
     private ROS2UnityComponent ros2Unity;
     private ROS2Node ros2Node;
-    private bool subscriptionsCreated = false;
 
-    // Suscripciones a cada cámara
-    private ISubscription<CompressedImage> imageSubscription1;
-    private ISubscription<CompressedImage> imageSubscription2;
-    private ISubscription<CompressedImage> imageSubscription3;
-    private ISubscription<CompressedImage> imageSubscription4;
-    private ISubscription<CompressedImage> imageSubscription5;
+    // Subscriptions
+    private ISubscription<Bool> subLogitech1, subLogitech2, subSiyi, subZed, subLidar2D, subLidar4D, subRealsense;
+    private ISubscription<CompressedImage> imageSubLogitech1, imageSubLogitech2, imageSubSiyi, imageSubZed, imageSubRealsense;
 
-    // Colas separadas para cada cámara
-    private ConcurrentQueue<byte[]> imageQueue1 = new ConcurrentQueue<byte[]>();
-    private ConcurrentQueue<byte[]> imageQueue2 = new ConcurrentQueue<byte[]>();
-    private ConcurrentQueue<byte[]> imageQueue3 = new ConcurrentQueue<byte[]>();
-    private ConcurrentQueue<byte[]> imageQueue4 = new ConcurrentQueue<byte[]>();
-    private ConcurrentQueue<byte[]> imageQueue5 = new ConcurrentQueue<byte[]>();
+    // Image Queues
+    private ConcurrentQueue<byte[]> imageQueueLogitech1 = new ConcurrentQueue<byte[]>();
+    private ConcurrentQueue<byte[]> imageQueueLogitech2 = new ConcurrentQueue<byte[]>();
+    private ConcurrentQueue<byte[]> imageQueueSiyi = new ConcurrentQueue<byte[]>();
+    private ConcurrentQueue<byte[]> imageQueueZed = new ConcurrentQueue<byte[]>();
+    private ConcurrentQueue<byte[]> imageQueueRealsense = new ConcurrentQueue<byte[]>();
 
-    // Texturas separadas para cada cámara
-    private Texture2D texture1;
-    private Texture2D texture2;
-    private Texture2D texture3;
-    private Texture2D texture4;
-    private Texture2D texture5;
+    // Textures
+    private Texture2D textureLogitech1, textureLogitech2, textureSiyi, textureZed, textureRealsense;
 
-    // Flags de procesamiento
-    private bool isProcessing1 = false; 
-    private bool isProcessing2 = false;
-    private bool isProcessing3 = false; 
-    private bool isProcessing4 = false;
-    private bool isProcessing5 = false; 
+    private ConcurrentQueue<System.Action> mainThreadActions = new ConcurrentQueue<System.Action>();
 
     void Start()
     {
@@ -63,145 +65,82 @@ public class Cameras : MonoBehaviour
 
     void Update()
     {
-        // Crear el nodo una sola vez
+        // Procesar acciones encoladas en el hilo principal
+        while (mainThreadActions.TryDequeue(out var action))
+        {
+            action();
+        }
+
+        // Procesar imágenes en las colas
+        ProcessImageQueue(ref textureLogitech1, imageQueueLogitech1, logitech1Image);
+        ProcessImageQueue(ref textureLogitech2, imageQueueLogitech2, logitech2Image);
+        ProcessImageQueue(ref textureSiyi, imageQueueSiyi, siyiImage);
+        ProcessImageQueue(ref textureZed, imageQueueZed, zedImage);
+        ProcessImageQueue(ref textureRealsense, imageQueueRealsense, realsenseImage);
+
+        // Crear nodo y suscripciones
         if (ros2Node == null && ros2Unity.Ok())
         {
-            ros2Node = ros2Unity.CreateNode("compressed_image_listener_node");
-        }
+            ros2Node = ros2Unity.CreateNode("camera_ui_listener_node");
 
-        // Crear las suscripciones cuando tengamos el nodo creado y no se hayan creado aún
-        if (ros2Node != null && !subscriptionsCreated)
+            // Suscripciones a estados (true/false)
+            subLogitech1 = ros2Node.CreateSubscription<Bool>(topicLogitech1, (msg) => EnqueueUIAction(msg, logitech1UI));
+            subLogitech2 = ros2Node.CreateSubscription<Bool>(topicLogitech2, (msg) => EnqueueUIAction(msg, logitech2UI));
+            subSiyi = ros2Node.CreateSubscription<Bool>(topicSiyi, (msg) => EnqueueUIAction(msg, siyiUI));
+            subZed = ros2Node.CreateSubscription<Bool>(topicZed, (msg) => EnqueueUIAction(msg, zedUI));
+            subRealsense = ros2Node.CreateSubscription<Bool>(topicRealsense, (msg) => EnqueueUIAction(msg, realsenseUI));
+
+            // Suscripciones a imágenes
+            imageSubLogitech1 = ros2Node.CreateSubscription<CompressedImage>(imageTopicLogitech1, (msg) => EnqueueImage(msg, imageQueueLogitech1));
+            imageSubLogitech2 = ros2Node.CreateSubscription<CompressedImage>(imageTopicLogitech2, (msg) => EnqueueImage(msg, imageQueueLogitech2));
+            imageSubSiyi = ros2Node.CreateSubscription<CompressedImage>(imageTopicSiyi, (msg) => EnqueueImage(msg, imageQueueSiyi));
+            imageSubZed = ros2Node.CreateSubscription<CompressedImage>(imageTopicZed, (msg) => EnqueueImage(msg, imageQueueZed));
+            imageSubRealsense = ros2Node.CreateSubscription<CompressedImage>(imageTopicRealsense, (msg) => EnqueueImage(msg, imageQueueRealsense));
+        }
+    }
+
+    private void EnqueueUIAction(Bool msg, GameObject uiElement)
+    {
+        mainThreadActions.Enqueue(() =>
         {
-            Camera1Subscriber();
-            Camera2Subscriber();
-            Camera3Subscriber();
-            Camera4Subscriber();
-            Camera5Subscriber();
+            bool newState = msg.Data;
+            SetActiveRecursively(uiElement, newState);
+            Debug.Log($"UI Element '{uiElement.name}' set to: {(newState ? "Active" : "Inactive")}");
+        });
+    }
 
-            subscriptionsCreated = true;
-        }
+    private void SetActiveRecursively(GameObject obj, bool state)
+    {
+        if (obj == null) return;
 
-        // Procesar la cola de la cámara 1
-        if (!isProcessing1 && imageQueue1.TryDequeue(out byte[] imageData1))
+        obj.SetActive(state);
+        foreach (Transform child in obj.transform)
         {
-            isProcessing1 = true;
-            ProcessImage(imageData1, ref texture1, rawImageDisplay1, () => { isProcessing1 = false; });
+            SetActiveRecursively(child.gameObject, state);
         }
+    }
 
-        // Procesar la cola de la cámara 2
-        if (!isProcessing2 && imageQueue2.TryDequeue(out byte[] imageData2))
+    private void EnqueueImage(CompressedImage msg, ConcurrentQueue<byte[]> imageQueue)
+    {
+        while (imageQueue.Count >= 1) { imageQueue.TryDequeue(out _); }
+        imageQueue.Enqueue(msg.Data);
+    }
+
+    private void ProcessImageQueue(ref Texture2D texture, ConcurrentQueue<byte[]> imageQueue, RawImage display)
+    {
+        if (display == null) return;
+
+        if (imageQueue.TryDequeue(out byte[] imageData))
         {
-            isProcessing2 = true;
-            ProcessImage(imageData2, ref texture2, rawImageDisplay2, () => { isProcessing2 = false; });
+            if (texture == null)
+            {
+                texture = new Texture2D(2, 2);
+            }
+
+            if (texture.LoadImage(imageData))
+            {
+                display.texture = texture;
+            }
         }
-
-        // Procesar la cola de la cámara 3
-        if (!isProcessing3 && imageQueue3.TryDequeue(out byte[] imageData3))
-        {
-            isProcessing3 = true;
-            ProcessImage(imageData3, ref texture3, rawImageDisplay3, () => { isProcessing3 = false; });
-        }
-
-        // Procesar la cola de la cámara 4
-        if (!isProcessing4 && imageQueue4.TryDequeue(out byte[] imageData4))
-        {
-            isProcessing4 = true;
-            ProcessImage(imageData4, ref texture4, rawImageDisplay4, () => { isProcessing4 = false; });
-        }
-
-        // Procesar la cola de la cámara 5
-        if (!isProcessing5 && imageQueue5.TryDequeue(out byte[] imageData5))
-        {
-            isProcessing5 = true;
-            ProcessImage(imageData5, ref texture5, rawImageDisplay5, () => { isProcessing5 = false; });
-        }
-    }
-
-    void Camera1Subscriber()
-    {
-        imageSubscription1 = ros2Node.CreateSubscription<CompressedImage>(
-            topicName1,
-            ImagenRecibidaCam1
-        );
-    }
-
-    void Camera2Subscriber()
-    {
-        imageSubscription2 = ros2Node.CreateSubscription<CompressedImage>(
-            topicName2,
-            ImagenRecibidaCam2
-        );
-    }
-
-    void Camera3Subscriber()
-    {
-        imageSubscription3 = ros2Node.CreateSubscription<CompressedImage>(
-            topicName3,
-            ImagenRecibidaCam3
-        );
-    }
-
-    void Camera4Subscriber()
-    {
-        imageSubscription4 = ros2Node.CreateSubscription<CompressedImage>(
-            topicName4,
-            ImagenRecibidaCam4
-        );
-    }
-
-    void Camera5Subscriber()
-    {
-        imageSubscription5 = ros2Node.CreateSubscription<CompressedImage>(
-            topicName5,
-            ImagenRecibidaCam5
-        );
-    }
-
-    private void ImagenRecibidaCam1(CompressedImage msg)
-    {
-        while (imageQueue1.Count >= maxQueueSize) { imageQueue1.TryDequeue(out _); }
-        imageQueue1.Enqueue(msg.Data);
-    }
-
-    private void ImagenRecibidaCam2(CompressedImage msg)
-    {
-        while (imageQueue2.Count >= maxQueueSize) { imageQueue2.TryDequeue(out _); }
-        imageQueue2.Enqueue(msg.Data);
-    }
-
-    private void ImagenRecibidaCam3(CompressedImage msg)
-    {
-        while (imageQueue3.Count >= maxQueueSize) { imageQueue3.TryDequeue(out _); }
-        imageQueue3.Enqueue(msg.Data);
-    }
-
-    private void ImagenRecibidaCam4(CompressedImage msg)
-    {
-        while (imageQueue4.Count >= maxQueueSize) { imageQueue4.TryDequeue(out _); }
-        imageQueue4.Enqueue(msg.Data);
-    }
-
-    private void ImagenRecibidaCam5(CompressedImage msg)
-    {
-        while (imageQueue5.Count >= maxQueueSize) { imageQueue5.TryDequeue(out _); }
-        imageQueue5.Enqueue(msg.Data);
-    }
-
-    private void ProcessImage(byte[] imageData, ref Texture2D texture, RawImage display, Action onComplete)
-    {
-        // Crear la textura si no existe
-        if (texture == null)
-        {
-            texture = new Texture2D(2, 2); 
-        }
-
-        // Cargar los datos en la textura
-        texture.LoadImage(imageData);
-        texture.Apply();
-
-        // Asignar la textura al RawImage correspondiente
-        display.texture = texture;
-
-        onComplete?.Invoke();
     }
 }

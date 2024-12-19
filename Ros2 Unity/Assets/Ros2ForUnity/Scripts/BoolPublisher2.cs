@@ -9,9 +9,6 @@ namespace ROS2
         private ROS2Node ros2Node;
 
         private IPublisher<std_msgs.msg.Bool> camBoolPub;
-        private IPublisher<std_msgs.msg.Bool> teleopBoolPub;
-        private IPublisher<std_msgs.msg.Bool> vueltasBoolPub;
-        private IPublisher<std_msgs.msg.Bool> avanzarBoolPub;
 
         private IPublisher<geometry_msgs.msg.Twist> cmdVelPub;
 
@@ -28,9 +25,6 @@ namespace ROS2
         public float speedSlider = 50;
 
         public Button camButton;
-        public Button teleopButton;
-        public Button vueltasButton;
-        public Button avanzarButton;
         public Button forwardButton;
         public Button backwardButton;
         public Button rotateLeftButton;
@@ -53,9 +47,6 @@ namespace ROS2
             {
                 ros2Node = ros2Unity.CreateNode("ROS2UnityBoolTalkerNode");
                 camBoolPub = ros2Node.CreatePublisher<std_msgs.msg.Bool>("/gui_cam");
-                teleopBoolPub = ros2Node.CreatePublisher<std_msgs.msg.Bool>("/gui_teleop");
-                vueltasBoolPub = ros2Node.CreatePublisher<std_msgs.msg.Bool>("/gui_vueltas");
-                avanzarBoolPub = ros2Node.CreatePublisher<std_msgs.msg.Bool>("/gui_avanzar");
 
                 ros2Node = ros2Unity.CreateNode("ROS2UnityCmdVelTalkerNode");
                 cmdVelPub = ros2Node.CreatePublisher<geometry_msgs.msg.Twist>("/cmd_vel");
@@ -153,48 +144,6 @@ namespace ROS2
             }
         }
 
-        public void SendTeleopBool()
-        {
-            if (teleopBoolPub != null)
-            {
-                teleopBoolState = !teleopBoolState;
-                std_msgs.msg.Bool msg = new std_msgs.msg.Bool();
-                msg.Data = teleopBoolState;
-                teleopBoolPub.Publish(msg);
-
-                Debug.Log($"Published to /gui_teleop: {msg.Data}");
-                teleopButton.image.color = teleopBoolState ? trueColor : falseColor;
-            }
-        }
-
-        public void SendVueltasBool()
-        {
-            if (vueltasBoolPub != null)
-            {
-                vueltasBoolState = !vueltasBoolState;
-                std_msgs.msg.Bool msg = new std_msgs.msg.Bool();
-                msg.Data = vueltasBoolState;
-                vueltasBoolPub.Publish(msg);
-
-                Debug.Log($"Published to /gui_vueltas: {msg.Data}");
-                vueltasButton.image.color = vueltasBoolState ? trueColor : falseColor;
-            }
-        }
-
-        public void SendAvanzarBool()
-        {
-            if (avanzarBoolPub != null)
-            {
-                avanzarBoolState = !avanzarBoolState;
-                std_msgs.msg.Bool msg = new std_msgs.msg.Bool();
-                msg.Data = avanzarBoolState;
-                avanzarBoolPub.Publish(msg);
-
-                Debug.Log($"Published to /gui_avanzar: {msg.Data}");
-                avanzarButton.image.color = avanzarBoolState ? trueColor : falseColor;
-            }
-        }
-
         private void UpdateMovementButtonColors()
         {
             const float tolerance = 0.01f;
@@ -208,9 +157,6 @@ namespace ROS2
         private void UpdateButtonColors()
         {
             camButton.image.color = camBoolState ? trueColor : falseColor;
-            teleopButton.image.color = teleopBoolState ? trueColor : falseColor;
-            vueltasButton.image.color = vueltasBoolState ? trueColor : falseColor;
-            avanzarButton.image.color = avanzarBoolState ? trueColor : falseColor;
         }
     }
 }
