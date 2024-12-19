@@ -4,7 +4,7 @@ using UnityEngine;
 using ROS2;
 using sensor_msgs.msg;
 
-public class LaserScanToPointCloud : MonoBehaviour  // ya no lo necesitamos
+public class LaserScanToPointCloud : MonoBehaviour
 {
     public string scanTopicName = "/scan";
     public string pointCloudTopicName = "/point_cloud";
