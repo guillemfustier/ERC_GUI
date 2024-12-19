@@ -45,7 +45,7 @@ public class ROS2TalkerExample : MonoBehaviour
 
             i++;
             std_msgs.msg.String msg = new std_msgs.msg.String();
-            msg.Data = "Hola pelotudito " + i;
+            msg.Data = "Hola mundo" + i;
             chatter_pub.Publish(msg);
         }
     }

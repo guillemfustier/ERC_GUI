@@ -14,10 +14,13 @@ public class ROS2Teleop : MonoBehaviour
 
     public GameObject MainCanvas;
     public GameObject CanvasTeleop;
-    public Button S_Button, W_Button, A_Button, D_Button, STOP_Button, ESC_Button;
+    
+    public Button S_Button, W_Button, A_Button, D_Button, STOP_Button;
+    //public Button ESC_Button;
     private Color originalColor = new Color32(255, 255, 255, 255); // Color FFFFFF
     private Color pressedColor = new Color32(200, 200, 200, 255); // Color C8C8C8
     private Color redColor = new Color32(255, 153, 153, 255); // Color FF9999
+    
 
     void Start()
     {
@@ -25,6 +28,7 @@ public class ROS2Teleop : MonoBehaviour
     }
 
     // ######### TECLAS #########
+    
     public void ActivatedKey_W()
     {
         Debug.Log("PULSANDO W");
@@ -54,7 +58,7 @@ public class ROS2Teleop : MonoBehaviour
         Debug.Log("PULSANDO STOP");
         changeColor(STOP_Button, redColor);
     }
-
+    /*
     public void ActivatedKey_ESC()
     {
         Debug.Log("PULSANDO ESC");
@@ -63,6 +67,7 @@ public class ROS2Teleop : MonoBehaviour
         MainCanvas.SetActive(true);
         CanvasTeleop.SetActive(false);
     }
+    */
     // ###########################
 
     // ########## ROS2 ##########
@@ -92,6 +97,7 @@ public class ROS2Teleop : MonoBehaviour
         float escInput = Input.GetAxis("Escape");
 
         // =========== VERTICAL ===========
+        
         if (verticalInput > 0) {
             // Lógica para cuando se presiona "W"
             ActivatedKey_W();
@@ -127,7 +133,7 @@ public class ROS2Teleop : MonoBehaviour
         else {
             changeColor(STOP_Button, originalColor);
         }
-
+        /*
         // =========== ESC ===========
         if (escInput > 0) {
             // Lógica para cuando se presiona "ESC"
@@ -138,6 +144,7 @@ public class ROS2Teleop : MonoBehaviour
         else {
             changeColor(ESC_Button, originalColor);
         }
+        */
         Debug.Log("Velocidad delante: " + verticalInput);
         Debug.Log("Velocidad lados: " + horizontalInput);
 
@@ -146,11 +153,12 @@ public class ROS2Teleop : MonoBehaviour
         else
             MoveWithCMDVel(verticalInput, horizontalInput);       
     }
-
+    
     public void changeColor(Button button, Color color)
     {
         button.GetComponent<Image>().color = color;
     }
+    
 }
 
 }  // namespace ROS2

@@ -11,6 +11,9 @@ namespace ROS2
         private IPublisher<std_msgs.msg.Bool> avanzar_publisher;
         private IPublisher<std_msgs.msg.Bool> vueltas_publisher;
 
+        private IPublisher<std_msgs.msg.Bool> CamarasPublisher;
+        private bool CamarasState = false;
+
 
 
         // Método Start
@@ -19,17 +22,27 @@ namespace ROS2
             ros2Unity = GetComponent<ROS2UnityComponent>();
         }
 
-        // ======== AVANZAR RECTO ========
-        public void Avanzar()
+        void Update()
         {
-            if (ros2Unity.Ok())
+            // Crear el nodo y publicador si aún no se han creado
+            if (ros2Node == null && ros2Unity.Ok())
             {
                 ros2Node = ros2Unity.CreateNode("NodoGeneral");
-                avanzar_publisher = ros2NodeAvanzar.CreatePublisher<std_msgs.msg.Bool>("avanzar");
+                CamarasPublisher = ros2Node.CreatePublisher<std_msgs.msg.Bool>("/gui/logitech_cameras");
+            }
+        } 
 
+        public void CameraManagement()
+        {
+            if (CamarasPublisher != null)
+            {
                 std_msgs.msg.Bool msg = new std_msgs.msg.Bool();
-                msg.Data = true;
-                avanzar_publisher.Publish(msg);
+                CamarasState = !CamarasState;
+                
+                msg.Data = CamarasState;
+                CamarasPublisher.Publish(msg);
+
+                Debug.Log("CameraManagement (topic: /gui/logitech_cameras): " + CamarasState);
             }
         }
 

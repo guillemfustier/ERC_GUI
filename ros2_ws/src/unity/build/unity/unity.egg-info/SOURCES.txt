@@ -3,8 +3,9 @@ setup.cfg
 setup.py
 resource/unity
 unity/__init__.py
-unity/image_suscriber.py
+unity/image_subscriber.py
 unity/moverse_esperar.py
+unity/setposition.py
 unity.egg-info/PKG-INFO
 unity.egg-info/SOURCES.txt
 unity.egg-info/dependency_links.txt
