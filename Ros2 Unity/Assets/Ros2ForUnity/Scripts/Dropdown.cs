@@ -15,13 +15,10 @@ public class DropdownDevices : MonoBehaviour
     public GameObject prefabLogitech2;
     public GameObject prefabSiyi;
     public GameObject prefabZed;
-    // Quitamos Lidar2D, Lidar4D porque ya no están
     public GameObject prefabRealsense;
 
     public Transform uiParent;
 
-    // Asumiendo que estos objetos son los mismos que se activan/desactivan
-    // y que ya no están los Lidares
     public GameObject zedUI;
     public GameObject realsenseUI;
     public GameObject siyiUI;
@@ -45,7 +42,6 @@ public class DropdownDevices : MonoBehaviour
 
     private ConcurrentQueue<System.Action> mainThreadActions = new ConcurrentQueue<System.Action>();
 
-    // Publisher para /n_cams
     private IPublisher<Int32> nCamsPub;
 
     void Start()
@@ -58,8 +54,11 @@ public class DropdownDevices : MonoBehaviour
 
         foreach (var kvp in topicToDeviceName)
         {
-            deviceStates[kvp.Value] = true; // Inicialmente todas activas
+            deviceStates[kvp.Value] = false;
         }
+
+        InitializeDeviceStates();
+        UpdateDropdown();
     }
 
     void Update()
@@ -73,7 +72,6 @@ public class DropdownDevices : MonoBehaviour
                 subscriptions[topic] = ros2Node.CreateSubscription<Bool>(topic, (msg) => OnDeviceMsgReceived(topic, msg));
             }
 
-            // Crear publisher para /n_cams
             nCamsPub = ros2Node.CreatePublisher<Int32>("/n_cams");
         }
 
@@ -81,6 +79,15 @@ public class DropdownDevices : MonoBehaviour
         {
             action();
         }
+    }
+
+    private void InitializeDeviceStates()
+    {
+        zedUI.SetActive(false);
+        realsenseUI.SetActive(false);
+        siyiUI.SetActive(false);
+        logitech1UI.SetActive(false);
+        logitech2UI.SetActive(false);
     }
 
     private void OnDeviceMsgReceived(string topic, Bool msg)
@@ -97,11 +104,6 @@ public class DropdownDevices : MonoBehaviour
 
     private void UpdateDropdown()
     {
-        int currentSelection = devicesDropdown.value;
-        string currentOption = (devicesDropdown.options.Count > 0 && currentSelection >= 0 && currentSelection < devicesDropdown.options.Count)
-                            ? devicesDropdown.options[currentSelection].text
-                            : "";
-
         devicesDropdown.ClearOptions();
         devicesDropdown.options.Add(new TMP_Dropdown.OptionData("Cámaras"));
         foreach (var kvp in topicToDeviceName)
@@ -111,9 +113,6 @@ public class DropdownDevices : MonoBehaviour
                 devicesDropdown.options.Add(new TMP_Dropdown.OptionData(kvp.Value));
             }
         }
-
-        int index = devicesDropdown.options.FindIndex(option => option.text == currentOption);
-        devicesDropdown.value = (index >= 0) ? index : 0;
         devicesDropdown.RefreshShownValue();
     }
 
@@ -133,12 +132,34 @@ public class DropdownDevices : MonoBehaviour
                 pub.Publish(msg);
                 Debug.Log($"Enviado True al topic: {kvp.Key}");
 
-                // Ahora que hemos activado una cámara desde el dropdown,
-                // contamos las cámaras activas de nuevo y publicamos /n_cams
+                ActivateCameraUI(kvp.Value);
+
                 PublishNCams();
 
                 break;
             }
+        }
+    }
+
+    private void ActivateCameraUI(string cameraName)
+    {
+        switch (cameraName)
+        {
+            case "Logitech Cam 1":
+                logitech1UI.SetActive(true);
+                break;
+            case "Logitech Cam 2":
+                logitech2UI.SetActive(true);
+                break;
+            case "Siyi Cam":
+                siyiUI.SetActive(true);
+                break;
+            case "Zed Cam":
+                zedUI.SetActive(true);
+                break;
+            case "Realsense Cam":
+                realsenseUI.SetActive(true);
+                break;
         }
     }
 
@@ -156,7 +177,6 @@ public class DropdownDevices : MonoBehaviour
 
     private int CountActiveCameras()
     {
-        // Contar cuántas cámaras están activas
         int count = 0;
         if (zedUI.activeSelf) count++;
         if (realsenseUI.activeSelf) count++;

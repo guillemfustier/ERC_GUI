@@ -33,7 +33,6 @@ public class botones : MonoBehaviour
     private ROS2UnityComponent ros2Unity;
     private ROS2Node ros2Node;
 
-    // Publishers para cada dispositivo
     private IPublisher<std_msgs.msg.Bool> logitech1Pub;
     private IPublisher<std_msgs.msg.Bool> logitech2Pub;
     private IPublisher<std_msgs.msg.Bool> siyiPub;
@@ -42,20 +41,17 @@ public class botones : MonoBehaviour
     private IPublisher<std_msgs.msg.Bool> lidar4DPub;
     private IPublisher<std_msgs.msg.Bool> realsensePub;
 
-    // Publisher para /n_cams
     private IPublisher<std_msgs.msg.Int32> nCamsPub;
 
-    // Estados iniciales (todos activos/true)
-    private bool logitech1State = true;
-    private bool logitech2State = true;
-    private bool siyiState = true;
-    private bool zedState = true;
-    private bool lidar2DState = true;
-    private bool lidar4DState = true;
-    private bool realsenseState = true;
+    private bool logitech1State = false;
+    private bool logitech2State = false;
+    private bool siyiState = false;
+    private bool zedState = false;
+    private bool lidar2DState = false;
+    private bool lidar4DState = false;
+    private bool realsenseState = false;
 
-    // Contador inicial de dispositivos activos
-    private int nCamsValue = 5;
+    private int nCamsValue = 0;
 
     void Start()
     {
@@ -68,7 +64,6 @@ public class botones : MonoBehaviour
         {
             ros2Node = ros2Unity.CreateNode("gui_botonera_node");
 
-            // Crear publicadores
             logitech1Pub = ros2Node.CreatePublisher<std_msgs.msg.Bool>("/gui_cam_logitech_1");
             logitech2Pub = ros2Node.CreatePublisher<std_msgs.msg.Bool>("/gui_cam_logitech_2");
             siyiPub = ros2Node.CreatePublisher<std_msgs.msg.Bool>("/gui_cam_siyi");
@@ -79,44 +74,30 @@ public class botones : MonoBehaviour
 
             nCamsPub = ros2Node.CreatePublisher<std_msgs.msg.Int32>("/n_cams");
 
-            // Publicar el valor inicial de n_cams
             PublishNCams();
         }
     }
 
-    // Método genérico para togglear un dispositivo
-    // deviceState: el estado bool del dispositivo
-    // setDeviceState: acción para actualizar la variable de estado
-    // pub: publisher del dispositivo
-    // button: el botón del dispositivo
-    // rawImage: el RawImage del dispositivo
     private void ToggleDevice(ref bool deviceState, IPublisher<std_msgs.msg.Bool> pub, Button button, RawImage rawImage)
     {
-        // Cambiar de estado
         deviceState = !deviceState;
 
-        // Publicar el nuevo estado
         std_msgs.msg.Bool msg = new std_msgs.msg.Bool();
         msg.Data = deviceState;
         pub.Publish(msg);
 
-        // Mostrar/ocultar UI
         button.gameObject.SetActive(deviceState);
         rawImage.gameObject.SetActive(deviceState);
 
-        // Actualizar n_camsValue según el nuevo estado
         if (deviceState)
         {
-            // Si acabamos de pasar a true, sumamos 1
             nCamsValue++;
         }
         else
         {
-            // Si acabamos de pasar a false, restamos 1
             nCamsValue--;
         }
 
-        // Publicar el nuevo valor de n_cams
         PublishNCams();
     }
 

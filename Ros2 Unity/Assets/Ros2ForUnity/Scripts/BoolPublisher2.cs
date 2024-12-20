@@ -8,37 +8,35 @@ namespace ROS2
         private ROS2UnityComponent ros2Unity;
         private ROS2Node ros2Node;
 
-        private IPublisher<std_msgs.msg.Bool> camBoolPub;
+        private IPublisher<std_msgs.msg.Bool> logitech1Pub;
+        private IPublisher<std_msgs.msg.Bool> logitech2Pub;
+        private IPublisher<std_msgs.msg.Bool> siyiPub;
+        private IPublisher<std_msgs.msg.Bool> zedPub;
+        private IPublisher<std_msgs.msg.Bool> realsensePub;
 
-        private IPublisher<geometry_msgs.msg.Twist> cmdVelPub;
+        private IPublisher<std_msgs.msg.Int32> nCamsPub;
 
         private bool camBoolState = false;
-        private bool teleopBoolState = false;
-        private bool vueltasBoolState = false;
-        private bool avanzarBoolState = false;
-
-        private float linearSpeed = 0.0f;
-        private float angularSpeed = 0.0f;
-        private const float maxSpeed = 1.0f;
 
         [Range(0, 100)]
         public float speedSlider = 50;
 
         public Button camButton;
-        public Button forwardButton;
-        public Button backwardButton;
-        public Button rotateLeftButton;
-        public Button rotateRightButton;
 
-        private Color trueColor = new Color32(40, 167, 69, 255);
-        private Color falseColor = new Color32(0, 123, 255, 255);
-        private Color activeColor = new Color32(255, 106, 0, 255); // Nuevo color #FF6A00
-        private Color inactiveColor = new Color32(241, 196, 15, 255);
+        [SerializeField] private Sprite initialImage;
+        [SerializeField] private Sprite toggledImage;
+
+        [Header("UI References for Cameras")]
+        public GameObject zedUI;
+        public GameObject realsenseUI;
+        public GameObject siyiUI;
+        public GameObject logitech1UI;
+        public GameObject logitech2UI;
 
         void Start()
         {
             ros2Unity = GetComponent<ROS2UnityComponent>();
-            UpdateButtonColors();
+            UpdateButtonImage();
         }
 
         void Update()
@@ -46,117 +44,91 @@ namespace ROS2
             if (ros2Unity.Ok() && ros2Node == null)
             {
                 ros2Node = ros2Unity.CreateNode("ROS2UnityBoolTalkerNode");
-                camBoolPub = ros2Node.CreatePublisher<std_msgs.msg.Bool>("/gui_cam");
 
-                ros2Node = ros2Unity.CreateNode("ROS2UnityCmdVelTalkerNode");
-                cmdVelPub = ros2Node.CreatePublisher<geometry_msgs.msg.Twist>("/cmd_vel");
+                logitech1Pub = ros2Node.CreatePublisher<std_msgs.msg.Bool>("/gui_cam_logitech_1");
+                logitech2Pub = ros2Node.CreatePublisher<std_msgs.msg.Bool>("/gui_cam_logitech_2");
+                siyiPub = ros2Node.CreatePublisher<std_msgs.msg.Bool>("/gui_cam_siyi");
+                zedPub = ros2Node.CreatePublisher<std_msgs.msg.Bool>("/gui_cam_zed");
+                realsensePub = ros2Node.CreatePublisher<std_msgs.msg.Bool>("/gui_cam_realsense");
+
+                nCamsPub = ros2Node.CreatePublisher<std_msgs.msg.Int32>("/n_cams");
             }
-        }
-
-        private float CalculateIncrement()
-        {
-            return 0.05f;
-        }
-
-        private void PublishCmdVel()
-        {
-            if (cmdVelPub != null)
-            {
-                geometry_msgs.msg.Twist msg = new geometry_msgs.msg.Twist();
-                msg.Linear = new geometry_msgs.msg.Vector3 { X = linearSpeed, Y = 0.0f, Z = 0.0f };
-                msg.Angular = new geometry_msgs.msg.Vector3 { X = 0.0f, Y = 0.0f, Z = angularSpeed };
-
-                cmdVelPub.Publish(msg);
-
-                Debug.Log($"Published to /cmd_vel: Linear={linearSpeed}, Angular={angularSpeed}");
-                UpdateMovementButtonColors();
-            }
-        }
-
-        public void MoveForward()
-        {
-            if (linearSpeed < 0)
-            {
-                linearSpeed += CalculateIncrement();
-                if (linearSpeed > 0) linearSpeed = 0;
-            }
-            else
-            {
-                linearSpeed += CalculateIncrement();
-                linearSpeed = Mathf.Clamp(linearSpeed, 0.0f, maxSpeed);
-            }
-            PublishCmdVel();
-        }
-
-        public void MoveBackward()
-        {
-            if (linearSpeed > 0)
-            {
-                linearSpeed -= CalculateIncrement();
-                if (linearSpeed < 0) linearSpeed = 0;
-            }
-            else
-            {
-                linearSpeed -= CalculateIncrement();
-                linearSpeed = Mathf.Clamp(linearSpeed, -maxSpeed, 0.0f);
-            }
-            PublishCmdVel();
-        }
-
-        public void RotateRight()
-        {
-            angularSpeed -= CalculateIncrement();
-            angularSpeed = Mathf.Clamp(angularSpeed, -maxSpeed, maxSpeed);
-            PublishCmdVel();
-        }
-
-        public void RotateLeft()
-        {
-            angularSpeed += CalculateIncrement();
-            angularSpeed = Mathf.Clamp(angularSpeed, -maxSpeed, maxSpeed);
-            PublishCmdVel();
-        }
-
-        public void StopMotion()
-        {
-            linearSpeed = 0.0f;
-            angularSpeed = 0.0f;
-            PublishCmdVel();
-        }
-
-        public void UpdateSpeedFromSlider(float sliderValue)
-        {
-            speedSlider = sliderValue;
-            Debug.Log($"Slider updated: Increment={CalculateIncrement()} m/s");
         }
 
         public void SendCamBool()
         {
-            if (camBoolPub != null)
-            {
-                camBoolState = !camBoolState;
-                std_msgs.msg.Bool msg = new std_msgs.msg.Bool();
-                msg.Data = camBoolState;
-                camBoolPub.Publish(msg);
+            camBoolState = !camBoolState;
+            UpdateButtonImage();
 
-                Debug.Log($"Published to /gui_cam: {msg.Data}");
-                camButton.image.color = camBoolState ? trueColor : falseColor;
+            ToggleAllCameras(camBoolState);
+            PublishIndividualTopics(camBoolState);
+            PublishNCams(camBoolState);
+        }
+
+        private void ToggleAllCameras(bool state)
+        {
+            if (zedUI != null) zedUI.SetActive(state);
+            if (realsenseUI != null) realsenseUI.SetActive(state);
+            if (siyiUI != null) siyiUI.SetActive(state);
+            if (logitech1UI != null) logitech1UI.SetActive(state);
+            if (logitech2UI != null) logitech2UI.SetActive(state);
+
+            Debug.Log($"All cameras set to: {(state ? "Active" : "Inactive")}");
+        }
+
+        private void PublishIndividualTopics(bool state)
+        {
+            std_msgs.msg.Bool msg = new std_msgs.msg.Bool { Data = state };
+
+            if (logitech1Pub != null)
+            {
+                logitech1Pub.Publish(msg);
+                Debug.Log($"Published to /gui_cam_logitech_1: {state}");
+            }
+
+            if (logitech2Pub != null)
+            {
+                logitech2Pub.Publish(msg);
+                Debug.Log($"Published to /gui_cam_logitech_2: {state}");
+            }
+
+            if (siyiPub != null)
+            {
+                siyiPub.Publish(msg);
+                Debug.Log($"Published to /gui_cam_siyi: {state}");
+            }
+
+            if (zedPub != null)
+            {
+                zedPub.Publish(msg);
+                Debug.Log($"Published to /gui_cam_zed: {state}");
+            }
+
+            if (realsensePub != null)
+            {
+                realsensePub.Publish(msg);
+                Debug.Log($"Published to /gui_cam_realsense: {state}");
             }
         }
 
-        private void UpdateMovementButtonColors()
+        private void PublishNCams(bool state)
         {
-            const float tolerance = 0.01f;
+            if (nCamsPub != null)
+            {
+                std_msgs.msg.Int32 msg = new std_msgs.msg.Int32();
+                msg.Data = state ? 5 : 0;
+                nCamsPub.Publish(msg);
 
-            forwardButton.image.color = (linearSpeed > tolerance) ? activeColor : inactiveColor;
-            backwardButton.image.color = (linearSpeed < -tolerance) ? activeColor : inactiveColor;
-            rotateLeftButton.image.color = (angularSpeed > tolerance) ? activeColor : inactiveColor;
-            rotateRightButton.image.color = (angularSpeed < -tolerance) ? activeColor : inactiveColor;
+                Debug.Log($"Published to /n_cams: {msg.Data}");
+            }
         }
 
-        private void UpdateButtonColors()
+        private void UpdateButtonImage()
         {
-            camButton.image.color = camBoolState ? trueColor : falseColor;
+            if (camButton != null && camButton.image != null)
+            {
+                camButton.image.sprite = camBoolState ? toggledImage : initialImage;
+            }
         }
     }
 }

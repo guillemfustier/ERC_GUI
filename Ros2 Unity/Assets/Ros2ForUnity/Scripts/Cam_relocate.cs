@@ -15,7 +15,7 @@ public class Cam_relocate : MonoBehaviour
     private List<RectTransform> allCameras;
 
     [Header("Canvas Reference")]
-    public RectTransform canvasRect; // Referencia al RectTransform del Canvas
+    public RectTransform canvasRect;
 
     [Header("Position and Scale Configurations")]
     public CameraConfig[] configsFor1;
@@ -30,7 +30,6 @@ public class Cam_relocate : MonoBehaviour
 
     private ConcurrentQueue<int> nCamsQueue = new ConcurrentQueue<int>();
 
-    // Ranking de prioridad
     private readonly Dictionary<string, int> cameraPriority = new Dictionary<string, int>
     {
         {"Zed", 1},
@@ -40,19 +39,18 @@ public class Cam_relocate : MonoBehaviour
         {"Logitech2", 5}
     };
 
-    private int previousNCams = -1; // Rastrea el número previo de cámaras activas
+    private int previousNCams = 0;
 
     void Start()
     {
         ros2Unity = GetComponent<ROS2UnityComponent>();
 
-        // Inicializar lista de cámaras
         allCameras = new List<RectTransform> { zedUI, realsenseUI, siyiUI, logitech1UI, logitech2UI };
 
-        // Aplicar configuración inicial
-        int activeCameras = CountActiveCameras();
-        previousNCams = activeCameras; 
-        AdjustCameras(activeCameras);
+        foreach (var camera in allCameras)
+        {
+            camera.gameObject.SetActive(false);
+        }
     }
 
     void Update()
@@ -65,7 +63,6 @@ public class Cam_relocate : MonoBehaviour
 
         while (nCamsQueue.TryDequeue(out int nCams))
         {
-            // En lugar de verificar si es mayor, siempre volveremos a recolocar con un delay
             Invoke(nameof(AdjustCamerasWithDelay), 0.1f);
 
             previousNCams = nCams;

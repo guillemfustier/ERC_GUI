@@ -1,3 +1,4 @@
+// Script: Cameras.cs
 using ROS2;
 using sensor_msgs.msg;
 using UnityEngine;
@@ -42,18 +43,15 @@ public class Cameras : MonoBehaviour
     private ROS2UnityComponent ros2Unity;
     private ROS2Node ros2Node;
 
-    // Subscriptions
     private ISubscription<Bool> subLogitech1, subLogitech2, subSiyi, subZed, subLidar2D, subLidar4D, subRealsense;
     private ISubscription<CompressedImage> imageSubLogitech1, imageSubLogitech2, imageSubSiyi, imageSubZed, imageSubRealsense;
 
-    // Image Queues
     private ConcurrentQueue<byte[]> imageQueueLogitech1 = new ConcurrentQueue<byte[]>();
     private ConcurrentQueue<byte[]> imageQueueLogitech2 = new ConcurrentQueue<byte[]>();
     private ConcurrentQueue<byte[]> imageQueueSiyi = new ConcurrentQueue<byte[]>();
     private ConcurrentQueue<byte[]> imageQueueZed = new ConcurrentQueue<byte[]>();
     private ConcurrentQueue<byte[]> imageQueueRealsense = new ConcurrentQueue<byte[]>();
 
-    // Textures
     private Texture2D textureLogitech1, textureLogitech2, textureSiyi, textureZed, textureRealsense;
 
     private ConcurrentQueue<System.Action> mainThreadActions = new ConcurrentQueue<System.Action>();
@@ -61,36 +59,38 @@ public class Cameras : MonoBehaviour
     void Start()
     {
         ros2Unity = GetComponent<ROS2UnityComponent>();
+
+        // Start with all cameras disabled
+        SetActiveRecursively(logitech1UI, false);
+        SetActiveRecursively(logitech2UI, false);
+        SetActiveRecursively(siyiUI, false);
+        SetActiveRecursively(zedUI, false);
+        SetActiveRecursively(realsenseUI, false);
     }
 
     void Update()
     {
-        // Procesar acciones encoladas en el hilo principal
         while (mainThreadActions.TryDequeue(out var action))
         {
             action();
         }
 
-        // Procesar imágenes en las colas
         ProcessImageQueue(ref textureLogitech1, imageQueueLogitech1, logitech1Image);
         ProcessImageQueue(ref textureLogitech2, imageQueueLogitech2, logitech2Image);
         ProcessImageQueue(ref textureSiyi, imageQueueSiyi, siyiImage);
         ProcessImageQueue(ref textureZed, imageQueueZed, zedImage);
         ProcessImageQueue(ref textureRealsense, imageQueueRealsense, realsenseImage);
 
-        // Crear nodo y suscripciones
         if (ros2Node == null && ros2Unity.Ok())
         {
             ros2Node = ros2Unity.CreateNode("camera_ui_listener_node");
 
-            // Suscripciones a estados (true/false)
             subLogitech1 = ros2Node.CreateSubscription<Bool>(topicLogitech1, (msg) => EnqueueUIAction(msg, logitech1UI));
             subLogitech2 = ros2Node.CreateSubscription<Bool>(topicLogitech2, (msg) => EnqueueUIAction(msg, logitech2UI));
             subSiyi = ros2Node.CreateSubscription<Bool>(topicSiyi, (msg) => EnqueueUIAction(msg, siyiUI));
             subZed = ros2Node.CreateSubscription<Bool>(topicZed, (msg) => EnqueueUIAction(msg, zedUI));
             subRealsense = ros2Node.CreateSubscription<Bool>(topicRealsense, (msg) => EnqueueUIAction(msg, realsenseUI));
 
-            // Suscripciones a imágenes
             imageSubLogitech1 = ros2Node.CreateSubscription<CompressedImage>(imageTopicLogitech1, (msg) => EnqueueImage(msg, imageQueueLogitech1));
             imageSubLogitech2 = ros2Node.CreateSubscription<CompressedImage>(imageTopicLogitech2, (msg) => EnqueueImage(msg, imageQueueLogitech2));
             imageSubSiyi = ros2Node.CreateSubscription<CompressedImage>(imageTopicSiyi, (msg) => EnqueueImage(msg, imageQueueSiyi));
