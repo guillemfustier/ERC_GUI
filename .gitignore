@@ -79,7 +79,8 @@ crashlytics-build.properties
 /Ros2 Unity/UserSettings/*
 /Ros2 Unity/Temp/*
 /Ros2 Unity/Assets/Course Library
-/Ros2 Unity/Library
+/Ros2 Unity/Library/*
+**/Library/*
 /Ros2 Unity/Library
 Ros2 Unity/Library/ArtifactDB-lock
 /Ros2 Unity/Assets/Course Library
@@ -105,3 +106,19 @@ Ros2 Unity/Library/Bee/backend1.traceevents
 Ros2 Unity/Library/Bee/2400b0aE.dag
 Ros2 Unity/Library/ArtifactDB-lock
 Ros2 Unity/Library/ArtifactDB
+/Ros2 Unity/Library
+/Ros2 Unity/Library
+/Ros2 Unity/Library
+/Ros2 Unity/Library
+/ros2_ws/src/unity/build
+/ros2_ws/src/unity/install
+
+
+Ros2 Unity/Assets/UnitySimplified/UnitySimplified.obj
+Ros2 Unity/Assets/UnitySimplified/UnitySimplified.mtl
+Ros2 Unity/Assets/UnitySimplified/UnitySimplified.mtl.meta
+Ros2 Unity/Assets/UnitySimplified/UnitySimplified.obj
+Ros2 Unity/Assets/UnitySimplified/UnitySimplified.obj.meta
+Ros2 Unity/Assets/UnitySimplified.meta
+/Ros2 Unity/Library
+/Ros2 Unity/Logs

@@ -397,6 +397,7 @@
 "Assets/Ros2ForUnity/Scripts/Transformations.cs"
 "Assets/Scripts Generales/CamerasMenu.cs"
 "Assets/Scripts Generales/MainMenu.cs"
+"Assets/Scripts Generales/MovimientoModelo3D.cs"
 "Assets/Scripts Generales/OpenCVTest.cs"
 "Assets/Scripts Generales/ToggleSwitch.cs"
 "Assets/Scripts Generales/ToggleSwitchColor.cs"
